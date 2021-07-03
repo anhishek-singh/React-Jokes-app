@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react';
+import { First } from 'react-bootstrap/esm/PageItem';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  const [joke, setJoke]=useState("loading");
+  const[fname, setfname]=useState("abhishek");
+  const[sname, setsname]=useState("sahu");
+  const newJoke=(first, second)=>{
+    fetch(`http://api.icndb.com/jokes/random?firstName=${first}&lastName=${second}`)
+    .then(res=> res.json())
+    .then(res2=>{
+      console.log(res2)
+      setJoke(res2.value.joke)
+    })
+  }
+
+  useEffect(()=>{
+    newJoke(fname, sname)
+  },[fname, sname])
+  return ( 
+    <div>
+     
+      <h3>samsung lover</h3>
+      <input type="text" value={fname} onChange={(e)=>setfname(e.target.value)}></input>
+      <input type="text" value={sname} onChange={(e)=>setsname(e.target.value)}></input>
+      
+      <button onClick={()=>newJoke(fname, sname)}>Get Another Joke</button>
+      <h4>{joke}</h4>
     </div>
   );
 }
 
 export default App;
+ 
